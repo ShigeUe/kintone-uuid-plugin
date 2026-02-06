@@ -1,0 +1,35 @@
+{
+  "manifest_version": 1,
+  "version": "1.0.0",
+  "type": "APP",
+  "name": {
+    "ja": "UUID設定プラグイン",
+    "en": "Plugin for setting UUID"
+  },
+  "description": {
+    "ja": "指定したフィールドにUUIDを設定するプラグインです。設定したフィールドは編集不可になります。",
+    "en": "This plugin sets a UUID in the specified field. The configured field becomes non-editable."
+  },
+  "icon": "images/icon.png",
+  "homepage_url": {
+    "ja": "https://github.com/ShigeUe/kintone-uuid-plugin",
+    "en": "https://github.com/ShigeUe/kintone-uuid-plugin"
+  },
+  "desktop": {
+    "js": [
+      "js/desktop.js"
+    ]
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/kintone-rest-api-client/6.1.1/KintoneRestAPIClient.min.js",
+      "js/config.js"
+    ],
+    "css": [
+      "css/51-modern-default.css",
+      "css/config.css"
+    ],
+    "required_params": ["uuid"]
+  }
+}
