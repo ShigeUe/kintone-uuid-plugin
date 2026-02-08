@@ -32,10 +32,10 @@
     // 追加・編集画面で編集させない
     disable_field(event);
 
-    // 指定フィールドが空の時、uuidを設定する
+    // 指定フィールドが空の時・レコードの再利用でレコードを作った時、uuidを設定する
     const field = event.record[uuid_field_code];
     console.log(field);
-    if (field.value == '' || field.value == null) {
+    if (event.reuse || field.value == '' || field.value == null) {
       const new_uuid = crate_uuid();
       console.log(new_uuid);
       field.value = new_uuid;
