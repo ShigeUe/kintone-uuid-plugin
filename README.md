@@ -8,5 +8,4 @@ UUIDを保存するフィールドは編集不可になります。
 
 デスクトップ版のみになります。
 
-右上の `Code` ボタンからダウンロードしたzipファイルを以下のサイトにアップロードしてプラグインに変換してください。  
-https://plugin-packer.kintone.dev/index-ja.html
+右のReleasesからダウンロードできます。

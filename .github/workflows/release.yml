@@ -1,0 +1,54 @@
+name: Release plugin
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ./.node-version
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          CI: true
+
+      - name: Run package
+        id: package
+        run: |
+          MANIFEST_FILE=src/manifest.json
+          PLUGIN_NAME=$(jq -r '.name.en' "$MANIFEST_FILE")
+          PLUGIN_VERSION=$(jq -r '.version' "$MANIFEST_FILE")
+          PLUGIN_FILE_NAME="$PLUGIN_NAME"_v"$PLUGIN_VERSION".zip
+          # generate ppk file
+          cat << EOF > ./"$PLUGIN_NAME".ppk
+          ${{ secrets.PPK_SECRET }}
+          EOF
+          # package
+          npm run pkg -- --ppk "$PLUGIN_NAME".ppk --out "$PLUGIN_FILE_NAME"
+          rm -f ./"$PLUGIN_NAME".ppk
+          # export output variables
+          echo "TAG_NAME=v${PLUGIN_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "PLUGIN_FILE_NAME=${PLUGIN_FILE_NAME}" >> "$GITHUB_OUTPUT"
+        env:
+          PPK_SECRET: ${{ secrets.PPK_SECRET }}
+
+      - name: Release
+        run: |
+          git tag "$TAG_NAME"
+          git push --tags -f origin "$TAG_NAME"
+          gh release create "$TAG_NAME" ${{ env.PLUGIN_FILE_NAME }} --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.package.outputs.TAG_NAME }}
+          PLUGIN_FILE_NAME: ${{ steps.package.outputs.PLUGIN_FILE_NAME }}
