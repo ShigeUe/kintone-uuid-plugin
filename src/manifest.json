@@ -4,7 +4,7 @@
   "type": "APP",
   "name": {
     "ja": "UUID設定プラグイン",
-    "en": "Plugin for setting UUID"
+    "en": "Plugin_for_setting_UUID"
   },
   "description": {
     "ja": "指定したフィールドにUUIDを設定するプラグインです。設定したフィールドは編集不可になります。",

@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@kintone/plugin-packer": "^9.1.0"
+  },
+  "scripts": {
+    "pkg": "kintone-plugin-packer src"
+  }
+}
